@@ -53,5 +53,40 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSAppleMusicUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSCalendarsUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSContactsUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSMotionUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSRemindersUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+  <string>Custom alert permision</string>
+  <key>NSSiriUsageDescription</key>
+  <string>Custom alert permision</string>
+
+
 </dict>
 </plist>

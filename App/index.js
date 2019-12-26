@@ -7,11 +7,11 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-
+import MapScreens from './Containers/MapScreens';
 const App = () => {
   return (
     <View style={styles.startContainer}>
-      <Text>HomePage</Text>
+      <MapScreens />
     </View>
   );
 };
