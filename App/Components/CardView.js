@@ -5,46 +5,44 @@ import WeatherAttribute from './WeatherAttribute';
 
 const CardView = () => {
   return (
-    <TouchableOpacity>
-      <View style={styles.card}>
-        <View style={styles.weatherText}>
-          <Text style={styles.infoText}>The Lilac Field</Text>
-          <Text style={styles.infoText1}>
-            Kharkov region, Dergachevsky district
-          </Text>
-          <View
+    <View style={styles.card}>
+      <View style={styles.weatherText}>
+        <Text style={styles.infoText}>The Lilac Field</Text>
+        <Text style={styles.infoText1}>
+          Kharkov region, Dergachevsky district
+        </Text>
+        <View
+          style={{
+            paddingVertical: 15,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
             style={{
-              paddingVertical: 15,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              flex: 1,
+              color: '#FFF',
+              fontFamily: 'SFUIDisplay-Bold',
+              fontSize: 28,
             }}>
-            <Text
-              style={{
-                flex: 1,
-                color: '#FFF',
-                fontFamily: 'SFUIDisplay-Bold',
-                fontSize: 28,
-              }}>
-              25°C
-            </Text>
-            <WeatherAttribute
-              source={Icons.umbrela}
-              value={'40%'}
-              style={{color: '#FFFFFF'}}
-            />
-            <WeatherAttribute
-              source={Icons.humidity}
-              value={'40%'}
-              style={{color: '#FFFFFF'}}
-            />
-          </View>
-        </View>
-        <View style={styles.weatherImg}>
-          <Image source={Images.cloud} />
+            25°C
+          </Text>
+          <WeatherAttribute
+            source={Icons.umbrela}
+            value={'40%'}
+            style={{color: '#FFFFFF'}}
+          />
+          <WeatherAttribute
+            source={Icons.humidity}
+            value={'40%'}
+            style={{color: '#FFFFFF'}}
+          />
         </View>
       </View>
-    </TouchableOpacity>
+      <View style={styles.weatherImg}>
+        <Image source={Images.cloud} />
+      </View>
+    </View>
   );
 };
 const styles = StyleSheet.create({
