@@ -10,8 +10,10 @@ import WeatherForecast from '../Components/WeatherForecast';
 import {Images, Icons} from '../Assets';
 import TestChartCustom from '../Components/TestChart/TestChartCustom';
 import WeatherAttribute from '../Components/WeatherAttribute';
-
-const WeatherDetail = props => {
+import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import {RouteNames} from '../Config/Routes';
+IconMaterialCommunity.loadFont();
+export default function WeatherDetail(props) {
   return (
     <ScrollView
       style={{
@@ -72,8 +74,18 @@ const WeatherDetail = props => {
       </View>
     </ScrollView>
   );
+}
+WeatherDetail.navigationOptions = () => {
+  return {
+    headerTitle: () => <Text>{RouteNames.WeatherDetailScreen}</Text>,
+    headerBackTitle: () => <View />,
+    headerRight: () => (
+      <TouchableOpacity onPress={() => alert('edit')}>
+        <IconMaterialCommunity name="dots-vertical" size={30} color="#900" />
+      </TouchableOpacity>
+    ),
+  };
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -82,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WeatherDetail;
+// export default WeatherDetail;

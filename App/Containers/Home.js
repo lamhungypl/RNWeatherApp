@@ -3,8 +3,10 @@ import {View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
 import {RouteNames} from '../Config/Routes';
 import CardView from '../Components/CardView';
 import ButtonCustom from '../Components/ButtonCustom';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
+IconAntDesign.loadFont();
 const Home = props => {
   const goWeatherDetail = () => {
     props.navigation.navigate(RouteNames.WeatherDetailScreen);
@@ -22,6 +24,18 @@ const Home = props => {
     </View>
   );
 };
+Home.navigationOptions = ({navigation}) => {
+  return {
+    headerTitle: () => <Text>{RouteNames.HomeScreen}</Text>,
+    headerLeft: () => (
+      <TouchableOpacity
+        onPress={() => navigation.navigate(RouteNames.CityManagerScreen)}>
+        <IconAntDesign name="bars" size={30} color="#900" />
+      </TouchableOpacity>
+    ),
+  };
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
