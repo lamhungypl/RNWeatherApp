@@ -15,6 +15,10 @@ const Home = props => {
         <CardView></CardView>
         <Icon name="rocket" size={30} color="#900" />
       </TouchableOpacity>
+      <Button
+        title={'goCityManager'}
+        onPress={() => props.navigation.navigate(RouteNames.CityManagerScreen)}
+      />
     </View>
   );
 };
