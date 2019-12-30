@@ -3,79 +3,85 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Images, Icons} from '../Assets';
 import WeatherAttribute from './WeatherAttribute';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import WeatherAttributeCustom from './WeatherAttributeCustom';
 IconAntDesign.loadFont();
+SimpleLineIcons.loadFont();
 const CityCard = () => {
+  const handlePressCityCard = () => {};
   return (
-    <View style={styles.card}>
-      <View style={styles.weatherText}>
-        <Text style={styles.infoText}>The Lilac Field</Text>
-        <Text style={styles.infoText1}>
-          Kharkov region, Dergachevsky district
-        </Text>
-        <View
-          style={{
-            paddingVertical: 15,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              flex: 1,
-              color: '#FFF',
-              fontFamily: 'SFUIDisplay-Bold',
-              fontSize: 28,
-            }}>
-            25°C
-          </Text>
-          <WeatherAttribute
-            source={Icons.umbrela}
-            value={'40%'}
-            style={{color: '#FFFFFF'}}
-          />
-          <WeatherAttribute
-            source={Icons.humidity}
-            value={'40%'}
-            style={{color: '#FFFFFF'}}
-          />
+    <TouchableOpacity onPress={() => handlePressCityCard()}>
+      <View style={styles.card}>
+        <View style={styles.mainContent}>
+          <View style={styles.city}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={styles.cityName}>Thanh Xuân</Text>
+              <SimpleLineIcons name="location-pin" size={30} color="#000" />
+            </View>
+            <Text>Thanh Xuân, Hà Nội</Text>
+          </View>
+          <Image source={Icons.cloudrain}></Image>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={styles.temperature}>21°C</Text>
+          </View>
+        </View>
+        <View style={styles.seperator} />
+        <View style={styles.detailContent}>
+          <View style={styles.weatherAtt}>
+            <WeatherAttributeCustom title={'Độ ẩm'} value={'81%'} />
+            <Text>|</Text>
+            <WeatherAttributeCustom title={'Gió Tây'} value={'5.1km/h'} />
+          </View>
+          <View style={styles.min_max}>
+            <Text>24/20°C</Text>
+          </View>
         </View>
       </View>
-      <View style={styles.weatherImg}>
-        <Image source={Images.cloud} />
-      </View>
-      {/* <IconAntDesign name="bars" size={30} color="#900" /> */}
-    </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
   card: {
     paddingHorizontal: 20,
-    paddingVertical: 30,
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    height: 200,
-    width: 350,
-    borderRadius: 10,
-    backgroundColor: 'rgba(0,144,255,0.76)',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 20,
+    marginHorizontal: 20,
+    marginBottom: 15,
+    borderColor: '#ccc',
+  },
+  mainContent: {
     flexDirection: 'row',
   },
-  weatherImg: {
+  city: {
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cityName: {
+    fontFamily: 'SFUIDisplay-Medium',
+    fontSize: 20,
+  },
+  temperature: {
+    fontSize: 40,
+  },
+  seperator: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  detailContent: {
+    flexDirection: 'row',
+  },
+  weatherAtt: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  weatherText: {
-    flex: 1,
-  },
-  infoText: {
-    color: '#FFFFFF',
-    fontFamily: 'SFUIDisplay-Bold',
-    fontSize: 22,
-    paddingBottom: 10,
-  },
-  infoText1: {
-    color: '#FFFFFF',
-    fontFamily: 'SFUIDisplay-Medium',
-    fontSize: 12,
-  },
+  min_max: {},
 });
 export default CityCard;

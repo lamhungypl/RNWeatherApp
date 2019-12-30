@@ -13,7 +13,6 @@ import CardView from './Components/CardView';
 import WeatherDetail from './Containers/WeatherDetail';
 import TestChart from './Components/TestChart/TestChart';
 import TestChartCustom from './Components/TestChart/TestChartCustom';
-import WeatherForecast from './Components/WeatherForecast';
 import {Images} from './Assets';
 import AppContainer from './Config/Routes';
 const App = () => {

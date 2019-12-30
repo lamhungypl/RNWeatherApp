@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import WeatherForecast from '../Components/WeatherForecast';
+import WeatherForecast from '../Components/WeatherForecastRow';
 import {Images, Icons} from '../Assets';
 import TestChartCustom from '../Components/TestChart/TestChartCustom';
 import WeatherAttribute from '../Components/WeatherAttribute';
@@ -25,24 +25,21 @@ export default function WeatherDetail(props) {
       }}>
       <View style={{paddingHorizontal: 20, flex: 1}}>
         <View style={{height: 300, backgroundColor: '#009AEF'}}>
-          <Text>25°C</Text>
-          <Text>Nhiều mây</Text>
+          <View style={styles.mainWeather}>
+            <Text style={styles.currentTemp}>25°C</Text>
+            <Text style={styles.currentWeather}>Nhiều mây</Text>
+          </View>
         </View>
-        <View
-          style={{
-            backgroundColor: '#009AEF',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+        <View style={styles.forecastContainer}>
           <WeatherForecast
             source={Images.cloud}
             temp={{max: 24, min: 16}}
-            time={'Hom nay'}
+            time={'Hôm nay'}
           />
           <WeatherForecast
             source={Images.cloud}
             temp={{max: 24, min: 16}}
-            time={'Hom nay'}
+            time={'Hôm nay'}
           />
           <TouchableOpacity onPress={() => {}}>
             <View
@@ -51,23 +48,42 @@ export default function WeatherDetail(props) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text>Du bao 5 ngay</Text>
+              <Text style={styles.forecastText}>Dự báo 5 ngày</Text>
             </View>
           </TouchableOpacity>
         </View>
 
         <TestChartCustom />
 
-        <View>
-          <Text>Chi tiet</Text>
-          <View style={{backgroundColor: '#009AEF'}}>
+        <View style={styles.detailContainer}>
+          <View style={{flex: 1, padding: 10}}>
+            <Text style={styles.detaiText}>Chi tiết</Text>
+          </View>
+
+          <View style={{flex: 1}}>
             <View style={{flexDirection: 'row'}}>
-              <WeatherAttribute source={Icons.humidity} value={30} />
-              <WeatherAttribute source={Icons.humidity} value={30} />
+              <WeatherAttribute
+                title={'Gió'}
+                source={Icons.humidity}
+                value={30}
+              />
+              <WeatherAttribute
+                title={'Nhiệt độ'}
+                source={Icons.humidity}
+                value={30}
+              />
             </View>
             <View style={{flexDirection: 'row'}}>
-              <WeatherAttribute source={Icons.humidity} value={30} />
-              <WeatherAttribute source={Icons.humidity} value={30} />
+              <WeatherAttribute
+                title={'UV'}
+                source={Icons.humidity}
+                value={30}
+              />
+              <WeatherAttribute
+                title={'Áp suất'}
+                source={Icons.umbrela}
+                value={30}
+              />
             </View>
           </View>
         </View>
@@ -91,6 +107,44 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  mainWeather: {
+    position: 'absolute',
+    top: 10,
+    left: 5,
+  },
+  currentTemp: {
+    color: '#fff',
+    fontFamily: 'SFUIText-Regular',
+    fontSize: 70,
+  },
+  currentWeather: {
+    color: '#fff',
+    fontFamily: 'SFUIText-Regular',
+    fontSize: 30,
+  },
+  forecastContainer: {
+    backgroundColor: 'rgba(0, 118, 222,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  forecastText: {
+    color: '#fff',
+    fontFamily: 'SFUIText-Regular',
+    fontSize: 20,
+  },
+  detailContainer: {
+    backgroundColor: 'rgba(0, 118, 222,0.5)',
+    justifyContent: 'center',
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  detaiText: {
+    color: '#fff',
+    fontFamily: 'SFUIText-Regular',
+    fontSize: 20,
   },
 });
 
