@@ -24,8 +24,8 @@ const Home = props => {
   return (
     <View style={styles.container}>
       <ScrollableTabView renderTabBar={() => renderTabBar()}>
-        <WeatherDetail key={1} />
-        <WeatherDetail key={2} />
+        <WeatherDetail navigation={props.navigation} key={1} />
+        <WeatherDetail navigation={props.navigation} key={2} />
       </ScrollableTabView>
     </View>
   );

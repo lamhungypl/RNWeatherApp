@@ -12,14 +12,16 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import {RouteNames} from '../Config/Routes';
 IconAntDesign.loadFont();
 IconFeather.loadFont();
-const CityManager = () => {
-  const handlePressAddCity = () => {};
+const CityManager = props => {
+  const handlePressAddCity = () => {
+    alert('Plus!');
+  };
   return (
     <ScrollView>
-      <CityCard />
-      <CityCard />
-      <CityCard />
-      <CityCard />
+      <CityCard navigation={props.navigation} />
+      <CityCard navigation={props.navigation} />
+      <CityCard navigation={props.navigation} />
+      <CityCard navigation={props.navigation} />
       <TouchableOpacity
         style={styles.addCityBtn}
         onPress={() => handlePressAddCity()}>

@@ -5,10 +5,13 @@ import WeatherAttribute from './WeatherAttribute';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import WeatherAttributeCustom from './WeatherAttributeCustom';
+import {RouteNames} from '../Config/Routes';
 IconAntDesign.loadFont();
 SimpleLineIcons.loadFont();
-const CityCard = () => {
-  const handlePressCityCard = () => {};
+const CityCard = props => {
+  const handlePressCityCard = () => {
+    props.navigation.navigate(RouteNames.HomeScreen);
+  };
   return (
     <TouchableOpacity onPress={() => handlePressCityCard()}>
       <View style={styles.card}>
@@ -60,15 +63,15 @@ const styles = StyleSheet.create({
   },
   city: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
   cityName: {
     fontFamily: 'SFUIDisplay-Medium',
-    fontSize: 20,
+    fontSize: 15,
   },
   temperature: {
-    fontSize: 40,
+    fontSize: 30,
   },
   seperator: {
     borderWidth: 1,

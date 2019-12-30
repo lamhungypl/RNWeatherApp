@@ -41,7 +41,10 @@ export default function WeatherDetail(props) {
             temp={{max: 24, min: 16}}
             time={'Hôm nay'}
           />
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate(RouteNames.WeatherForecastScreen)
+            }>
             <View
               style={{
                 height: 50,
