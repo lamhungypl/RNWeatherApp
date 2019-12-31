@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,9 @@ import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIc
 import {RouteNames} from '../Config/Routes';
 IconMaterialCommunity.loadFont();
 export default function WeatherDetail(props) {
+  useEffect(() => {
+    console.log('prop', props);
+  }, []);
   return (
     <ScrollView
       style={{
@@ -26,7 +29,9 @@ export default function WeatherDetail(props) {
       <View style={{paddingHorizontal: 20, flex: 1}}>
         <View style={{height: 300, backgroundColor: '#009AEF'}}>
           <View style={styles.mainWeather}>
-            <Text style={styles.currentTemp}>25°C</Text>
+            <Text style={styles.currentTemp}>
+              {(props.weather && props.weather.temp) || ''}°C
+            </Text>
             <Text style={styles.currentWeather}>Nhiều mây</Text>
           </View>
         </View>
@@ -68,24 +73,24 @@ export default function WeatherDetail(props) {
               <WeatherAttribute
                 title={'Gió'}
                 source={Icons.humidity}
-                value={30}
+                value={props.weather && props.weather.speed}
               />
               <WeatherAttribute
-                title={'Nhiệt độ'}
+                title={'Cảm giác như'}
                 source={Icons.humidity}
-                value={30}
+                value={props.weather && props.weather.feels_like}
               />
             </View>
             <View style={{flexDirection: 'row'}}>
               <WeatherAttribute
-                title={'UV'}
+                title={'Sương mù'}
                 source={Icons.humidity}
-                value={30}
+                value={props.weather && props.weather.humidity}
               />
               <WeatherAttribute
                 title={'Áp suất'}
                 source={Icons.umbrela}
-                value={30}
+                value={props.weather && props.weather.pressure}
               />
             </View>
           </View>

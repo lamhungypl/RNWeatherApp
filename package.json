@@ -3,26 +3,32 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "adb reverse tcp:9090 tcp:9090 && react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/viewpager": "^3.3.0",
+    "axios": "^0.19.0",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-chart-kit": "^4.3.0",
     "react-native-gesture-handler": "^1.5.2",
+    "react-native-local-resource": "^0.1.6",
+    "react-native-modal": "^11.5.3",
     "react-native-reanimated": "^1.4.0",
     "react-native-screens": "^2.0.0-alpha.22",
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-svg": "^9.13.6",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
-    "react-navigation-stack": "^1.10.3"
+    "react-navigation-stack": "^1.10.3",
+    "sprintf-js": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -32,7 +38,8 @@
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
-    "react-test-renderer": "16.9.0"
+    "react-test-renderer": "16.9.0",
+    "reactotron-react-native": "^4.0.2"
   },
   "jest": {
     "preset": "react-native"

@@ -15,8 +15,10 @@ import TestChart from './Components/TestChart/TestChart';
 import TestChartCustom from './Components/TestChart/TestChartCustom';
 import {Images} from './Assets';
 import AppContainer from './Config/Routes';
+import TestImage from './Components/TestImage';
 const App = () => {
   return <AppContainer />;
+  // return <TestImage />;
 };
 
 const styles = StyleSheet.create({
