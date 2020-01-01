@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Images, Icons} from '../Assets';
 import WeatherAttribute from './WeatherAttribute';
@@ -9,6 +9,7 @@ import {RouteNames} from '../Config/Routes';
 IconAntDesign.loadFont();
 SimpleLineIcons.loadFont();
 const CityCard = props => {
+  const [isEditting, setIsEditting] = useState(false);
   const handlePressCityCard = () => {
     props.navigation.navigate(RouteNames.HomeScreen);
   };

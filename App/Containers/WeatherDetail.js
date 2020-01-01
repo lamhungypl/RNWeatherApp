@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,65 @@ import TestChartCustom from '../Components/TestChart/TestChartCustom';
 import WeatherAttribute from '../Components/WeatherAttribute';
 import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RouteNames} from '../Config/Routes';
+import {
+  replaceStringUrl,
+  callApiGet,
+  convertDataCurrentWeather,
+  convertDataHourlyForecast,
+} from '../Utils';
+import {UrlApi, API_KEY} from '../Utils/Constants';
+import ChartTemperature from '../Components/ChartTemperature';
 IconMaterialCommunity.loadFont();
 export default function WeatherDetail(props) {
+  const [currentWeather, setCurrentWeather] = useState({});
+  const [forecastData, setForecastData] = useState([]);
+  const [chartData, setChartData] = useState();
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [isLoadingForecast, setIsLoadingForecast] = useState(false);
+  const [isUpdatedForecast, setIsUpdatedForecast] = useState(false);
   useEffect(() => {
-    console.log('prop', props);
+    const chartDataConfig = forecastData.slice(0, 8).map(data => {
+      return {temp: data.temp, time: data.time};
+    });
+    const labels = chartDataConfig.map(data => data.time);
+    const data = chartDataConfig.map(data => data.temp);
+    const dataObject = {
+      labels: labels,
+      datasets: [
+        {
+          data: data,
+          color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        },
+      ],
+    };
+    setChartData(dataObject);
+  }, [forecastData]);
+
+  useEffect(() => {
+    getCurrentWeather();
+    getWeatherForecast();
   }, []);
+  const getCurrentWeather = async () => {
+    const url = replaceStringUrl(UrlApi.currentWeather, [
+      ...props.city,
+      API_KEY,
+    ]);
+    const data = await callApiGet(url);
+    const useData = convertDataCurrentWeather(data);
+    setCurrentWeather(useData);
+  };
+  const getWeatherForecast = async () => {
+    const url = replaceStringUrl(UrlApi.three_hourlyForecast, [
+      ...props.city,
+      API_KEY,
+    ]);
+    const data = await callApiGet(url);
+    const useData = convertDataHourlyForecast(data);
+    setForecastData(useData);
+    setIsUpdated(true);
+    setIsUpdatedForecast(true);
+  };
+
   return (
     <ScrollView
       style={{
@@ -30,9 +84,11 @@ export default function WeatherDetail(props) {
         <View style={{height: 300, backgroundColor: '#009AEF'}}>
           <View style={styles.mainWeather}>
             <Text style={styles.currentTemp}>
-              {(props.weather && props.weather.temp) || ''}°C
+              {(currentWeather && currentWeather.temp) || ''}°C
             </Text>
-            <Text style={styles.currentWeather}>Nhiều mây</Text>
+            <Text style={styles.currentWeather}>
+              {(currentWeather && currentWeather.description) || ''}
+            </Text>
           </View>
         </View>
         <View style={styles.forecastContainer}>
@@ -44,7 +100,7 @@ export default function WeatherDetail(props) {
           <WeatherForecast
             source={Images.cloud}
             temp={{max: 24, min: 16}}
-            time={'Hôm nay'}
+            time={'Ngày mai'}
           />
           <TouchableOpacity
             onPress={() =>
@@ -60,9 +116,10 @@ export default function WeatherDetail(props) {
             </View>
           </TouchableOpacity>
         </View>
-
-        <TestChartCustom />
-
+        {/* <TestChartCustom data={chartData} /> */}
+        {(isUpdatedForecast && <ChartTemperature data={chartData} />) || (
+          <View style={{height: 220, backgroundColor: '#0091EA'}} />
+        )}
         <View style={styles.detailContainer}>
           <View style={{flex: 1, padding: 10}}>
             <Text style={styles.detaiText}>Chi tiết</Text>
@@ -73,24 +130,24 @@ export default function WeatherDetail(props) {
               <WeatherAttribute
                 title={'Gió'}
                 source={Icons.humidity}
-                value={props.weather && props.weather.speed}
+                value={currentWeather.speed}
               />
               <WeatherAttribute
                 title={'Cảm giác như'}
                 source={Icons.humidity}
-                value={props.weather && props.weather.feels_like}
+                value={currentWeather.feels_like}
               />
             </View>
             <View style={{flexDirection: 'row'}}>
               <WeatherAttribute
                 title={'Sương mù'}
                 source={Icons.humidity}
-                value={props.weather && props.weather.humidity}
+                value={currentWeather.humidity}
               />
               <WeatherAttribute
                 title={'Áp suất'}
                 source={Icons.umbrela}
-                value={props.weather && props.weather.pressure}
+                value={currentWeather.pressure}
               />
             </View>
           </View>

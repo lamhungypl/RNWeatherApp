@@ -9,32 +9,49 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 // import {SearchBar} from 'react-native-elements';
+import Search from 'react-native-search-box';
+
 import {convertCityList} from '../Utils';
-import {getCityList, getCityListName} from '../Utils/data';
+import {getCityList, getCityListName, getListCityVN} from '../Utils/data';
 import {Icons} from '../Assets';
+import HeaderSearch from './HeaderSearch';
+const CANCEL_WIDTH = 'cancel'.length * 8 + 25;
 const CityPicker = props => {
   const [searchValue, setSearchValue] = useState('');
+  const [data, setData] = useState([]);
   const [isVisible, setIsVisible] = useState(props.isVisible);
-  const [data, setData] = useState();
+  const [renderData, setRenderData] = useState([]);
   useEffect(() => {
     getData();
   }, []);
-
+  useEffect(() => {});
+  useEffect(() => {
+    const filterData = data.filter(item => {
+      const name = `${item.name}, ${item.country}`;
+      const parterm = name.replace(/[, ]/g, '').toLowerCase();
+      const keywork = searchValue.replace(/[, ]/g, '').toLowerCase();
+      return parterm.includes(keywork);
+    });
+    setRenderData(filterData);
+  }, [searchValue]);
   const getData = async () => {
-    // const list = await getCityList();
-    // const listCity = convertCityList(list);
-    const listCity = await getCityListName();
-    setData(listCity);
+    const listCityVN = await getListCityVN();
+    setData(listCityVN);
+    setRenderData(listCityVN);
   };
 
   const updateSearch = text => {
     setSearchValue(text);
+  };
+  const clearQuery = () => {
+    setSearchValue('');
   };
   const onPressItem = () => {
     setIsVisible(false);
   };
   const renderItem = (item, index) => {
     const checked = true;
+    const name = `${item.name}, ${item.country}`;
     return (
       <View>
         <TouchableOpacity
@@ -43,7 +60,7 @@ const CityPicker = props => {
           <Text
             numberOfLines={1}
             style={[styles.cellTitle, props.cellTitleStyle]}>
-            {item.name}
+            {name}
           </Text>
           <Text style={[styles.cellLabel, props.cellLabelStyle]} />
 
@@ -60,19 +77,30 @@ const CityPicker = props => {
       useNativeDriver={true}
       hideModalContentWhileAnimating={true}
       backdropTransitionOutTiming={0}
-      isVisible={true}
+      style={{margin: 0}}
+      isVisible={isVisible}
       hideModalContentWhileAnimating={true}>
       <View style={{flex: 1, backgroundColor: 'white', borderRadius: 5}}>
-        {/* <SearchBar
-          placeholder="Type Here..."
+        <HeaderSearch onPress={() => clearQuery()} title={'Search'} />
+        <Search
+          cancelButtonWidth={CANCEL_WIDTH}
+          positionRightDelete={CANCEL_WIDTH}
+          cancelButtonViewStyle={{width: CANCEL_WIDTH}}
+          afterCancel={() => clearQuery()}
+          afterDelete={() => clearQuery()}
           onChangeText={text => updateSearch(text)}
-          value={searchValue}
-        /> */}
+          backgroundColor={'rgb(245, 245, 245)'}
+          titleCancelColor={'rgb(0, 0, 0)'}
+          tintColorSearch={'rgb(0, 0, 0)'}
+          inputStyle={styles.searchInput}
+          placeholder={'search'}
+          cancelTitle={'cancel'}
+        />
         <FlatList
           keyExtractor={(item, index) => {
-            return index;
+            return Math.random().toString();
           }}
-          data={data}
+          data={renderData}
           extraData={data}
           renderItem={({item, index}) => renderItem(item, index)}
           ItemSeparatorComponent={() => <View style={styles.separator} />}

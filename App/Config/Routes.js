@@ -6,10 +6,12 @@ import {createStackNavigator} from 'react-navigation-stack';
 import HomeScreen from '../Containers/Home';
 import WeatherForecastScreen from '../Containers/WeatherForecast';
 import CityManagerScreen from '../Containers/CityManager';
+import CityManagerEditScreen from '../Containers/CityManagerEdit';
 export const RouteNames = {
   HomeScreen: 'HomeScreen',
   WeatherForecastScreen: 'WeatherForecastScreen',
   CityManagerScreen: 'CityManagerScreen',
+  CityManagerEditScreen: 'CityManagerEditScreen',
 };
 const HomeStack = createStackNavigator(
   {
@@ -21,6 +23,9 @@ const HomeStack = createStackNavigator(
     },
     [RouteNames.CityManagerScreen]: {
       screen: CityManagerScreen,
+    },
+    [RouteNames.CityManagerEditScreen]: {
+      screen: CityManagerEditScreen,
     },
   },
   {

@@ -23,20 +23,6 @@ import {API_KEY, UrlApi} from '../Utils/Constants';
 Icon.loadFont();
 IconAntDesign.loadFont();
 const Home = props => {
-  const [currentWeather, setCurrentWeather] = useState();
-  useEffect(() => {
-    getCurrentWeather();
-  }, []);
-  const getCurrentWeather = async () => {
-    const url = replaceStringUrl(UrlApi.currentWeather, [
-      'hanoi',
-      'vn',
-      API_KEY,
-    ]);
-    const data = await callApiGet(url);
-    const useData = convertDataCurrentWeather(data);
-    setCurrentWeather(useData);
-  };
   const goWeatherDetail = () => {
     props.navigation.navigate(RouteNames.WeatherDetailScreen);
   };
@@ -45,15 +31,11 @@ const Home = props => {
     <View style={styles.container}>
       <ScrollableTabView renderTabBar={() => renderTabBar()}>
         <WeatherDetail
-          weather={currentWeather}
+          city={['hanoi', 'vn']}
           navigation={props.navigation}
           key={1}
         />
-        <WeatherDetail
-          weather={currentWeather}
-          navigation={props.navigation}
-          key={2}
-        />
+        {/* <WeatherDetail navigation={props.navigation} key={2} /> */}
       </ScrollableTabView>
     </View>
   );

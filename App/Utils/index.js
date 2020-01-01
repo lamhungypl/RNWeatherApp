@@ -18,8 +18,9 @@ export const replaceStringUrl = (baseUrl, arrStr) => {
   return path;
 };
 export const convertDataCurrentWeather = data => {
-  const {main, wind} = data;
-  return {...main, ...wind};
+  const {main, wind, weather} = data;
+  const {description, icon} = weather[0];
+  return {...main, ...wind, description, icon};
 };
 export const convertDataHourlyForecast = data => {
   const convertedData = data.list.map(item => {

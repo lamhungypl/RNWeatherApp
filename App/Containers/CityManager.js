@@ -15,24 +15,33 @@ import CityPicker from '../Components/CityPicker';
 IconAntDesign.loadFont();
 IconFeather.loadFont();
 const CityManager = props => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModalAdd, setIsOpenModalAdd] = useState(false);
+  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
+
   const modalRef = useRef(null);
   const handlePressAddCity = () => {
-    setIsOpenModal(true);
+    setIsOpenModalAdd(true);
+  };
+  const renderItem = (item, index, navigation) => {
+    return <CityCard navigation={navigation} />;
   };
   return (
-    <ScrollView>
-      <CityCard navigation={props.navigation} />
-      <CityCard navigation={props.navigation} />
-      <CityCard navigation={props.navigation} />
-      <CityCard navigation={props.navigation} />
+    <View style={styles.container}>
+      <FlatList
+        renderItem={(item, index) => {
+          const navigation = props.navigation;
+          return renderItem(item, index, navigation);
+        }}
+        data={[0, 1]}
+        keyExtractor={(item, index) => Math.random().toString()}
+      />
       <TouchableOpacity
         style={styles.addCityBtn}
         onPress={() => handlePressAddCity()}>
         <IconAntDesign name="pluscircle" size={60} color="#900" />
       </TouchableOpacity>
-      <CityPicker isVisible={isOpenModal} />
-    </ScrollView>
+      {isOpenModalAdd && <CityPicker isVisible={isOpenModalAdd} />}
+    </View>
   );
 };
 CityManager.navigationOptions = ({navigation}) => {
@@ -40,17 +49,22 @@ CityManager.navigationOptions = ({navigation}) => {
     headerTitle: () => <Text>{RouteNames.CityManagerScreen}</Text>,
     headerBackTitle: () => <View />,
     headerRight: () => (
-      <TouchableOpacity onPress={() => alert('edit')}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate(RouteNames.CityManagerEditScreen)}>
         <IconFeather name="edit" size={30} color="#900" />
       </TouchableOpacity>
     ),
   };
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   addCityBtn: {
     position: 'absolute',
     bottom: 20,
     right: 20,
+    alignSelf: 'flex-end',
   },
 });
 export default CityManager;

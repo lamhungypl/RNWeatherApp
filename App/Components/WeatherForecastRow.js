@@ -4,14 +4,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 const WeatherForecast = props => {
   const {source, time, temp, style} = props;
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        // backgroundColor: '#0078de',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-      }}>
+    <View style={styles.container}>
       <Image source={source} style={{padding: 5}} />
       <Text
         style={{
@@ -27,6 +20,12 @@ const WeatherForecast = props => {
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
   textInfo: {
     padding: 5,
     color: '#fff',

@@ -88,76 +88,35 @@ let chartConfigs = [
   },
 ];
 
-export default class TestChartCustom extends React.Component {
-  renderTabBar() {
-    return <StatusBar hidden />;
-  }
-  render() {
-    let width = Dimensions.get('window').width;
-    let height = 220;
-    let chartConfig = chartConfigs[0];
-    let labelStyle = {
-      color: chartConfig.color(),
-      marginVertical: 10,
-      textAlign: 'center',
-      fontSize: 16,
-    };
-    let graphStyle = {
-      marginVertical: 8,
-      ...chartConfig.style,
-    };
-    return (
-      <ScrollView
-        key={Math.random()}
-        style={{
-          backgroundColor: chartConfig.backgroundColor,
-          flex: 1,
-        }}>
-        <Text style={labelStyle}>Line Chart</Text>
-        <LineChart
-          data={data}
-          width={width}
-          height={height}
-          chartConfig={chartConfig}
-          style={graphStyle}
-        />
-      </ScrollView>
-      /*
-      <ScrollableTabView
-        renderTabBar={this.renderTabBar}
-        tabBarPosition="top"
-        style={{width: '100%', height: '100%'}}>
-        {chartConfigs.map(chartConfig => {
-          let labelStyle = {
-            color: chartConfig.color(),
-            marginVertical: 10,
-            textAlign: 'center',
-            fontSize: 16,
-          };
-          let graphStyle = {
-            marginVertical: 8,
-            ...chartConfig.style,
-          };
-          return (
-            <ScrollView
-              key={Math.random()}
-              style={{
-                backgroundColor: chartConfig.backgroundColor,
-                flex: 1,
-              }}>
-              <Text style={labelStyle}>Line Chart</Text>
-              <LineChart
-                data={data}
-                width={width}
-                height={height}
-                chartConfig={chartConfig}
-                style={graphStyle}
-              />
-            </ScrollView>
-          );
-        })}
-      </ScrollableTabView>
-*/
-    );
-  }
+export default function TestChartCustom(props) {
+  let width = Dimensions.get('window').width;
+  let height = 220;
+  let chartConfig = chartConfigs[5];
+  let labelStyle = {
+    color: chartConfig.color(),
+    marginVertical: 10,
+    textAlign: 'center',
+    fontSize: 16,
+  };
+  let graphStyle = {
+    marginVertical: 8,
+    ...chartConfig.style,
+  };
+  return (
+    <ScrollView
+      key={Math.random()}
+      style={{
+        backgroundColor: chartConfig.backgroundColor,
+        flex: 1,
+      }}>
+      <Text style={labelStyle}>Line Chart</Text>
+      <LineChart
+        data={data}
+        width={width}
+        height={height}
+        chartConfig={chartConfig}
+        style={graphStyle}
+      />
+    </ScrollView>
+  );
 }
