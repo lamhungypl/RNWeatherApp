@@ -1,7 +1,8 @@
 import {sprintf, vsprintf} from 'sprintf-js';
 import axios from 'axios';
 import moment from 'moment';
-
+import * as AsyncStorage from './AsyncStorage';
+export {AsyncStorage};
 export const callApiGet = async (url, params) => {
   return axios
     .get(url)
@@ -25,10 +26,19 @@ export const convertDataCurrentWeather = data => {
 export const convertDataHourlyForecast = data => {
   const convertedData = data.list.map(item => {
     const {dt_txt, main, weather, wind} = item;
-    const {temp} = main;
+    const {temp, temp_min, temp_max} = main;
     const {main: mainWeather, icon} = weather[0];
-    const time = moment(dt_txt, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
-    return {temp, time, ...wind, mainWeather, icon};
+
+    const localTime = moment(dt_txt, 'YYYY-MM-DD HH:mm:ss').local();
+    const time = moment(localTime).format('HH:mm');
+
+    const day = moment(localTime)
+      .format('L')
+      .split('/')
+      .slice(0, 2)
+      .reverse()
+      .join('/');
+    return {temp, temp_min, temp_max, day, time, ...wind, mainWeather, icon};
   });
   return convertedData;
 };

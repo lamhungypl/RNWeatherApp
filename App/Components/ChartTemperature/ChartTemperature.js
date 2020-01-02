@@ -24,9 +24,7 @@ const chartConfig = {
 const ChartTemperature = props => {
   const [chartData, setChartData] = useState();
 
-  useEffect(() => {
-    console.log('props chart', props);
-  });
+  useEffect(() => {});
   return (
     <ScrollView
       key={Math.random()}
@@ -34,7 +32,7 @@ const ChartTemperature = props => {
         backgroundColor: chartConfig.backgroundColor,
         flex: 1,
       }}>
-      <Text style={styles.labelStyle}>Line Chart</Text>
+      <Text style={styles.labelStyle}>Biểu đồ nhiệt trong ngày</Text>
       <LineChart
         data={props.data}
         width={width}
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
   },
   graphStyle: {
     marginVertical: 8,
+
     ...chartConfig.style,
   },
 });

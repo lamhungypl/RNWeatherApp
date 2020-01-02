@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Icons} from '../Assets';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
@@ -6,13 +6,14 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 IconAntDesign.loadFont();
 SimpleLineIcons.loadFont();
 const CityCardEdit = props => {
-  const handlePressMinus = () => {
-    props.onPressDelete && props.onPressDelete();
+  const handlePressMinus = city => {
+    props.onPressDelete && props.onPressDelete(city);
   };
+  useEffect(() => {}, []);
   return (
     <View style={styles.card}>
       <View style={styles.minus}>
-        <TouchableOpacity onPress={() => handlePressMinus()}>
+        <TouchableOpacity onPress={() => handlePressMinus(props.city.item)}>
           <IconAntDesign name="minuscircleo" size={30} color="#900" />
         </TouchableOpacity>
       </View>
@@ -24,10 +25,12 @@ const CityCardEdit = props => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={styles.cityName}>Thanh Xuân</Text>
+          <Text style={styles.cityName}>{props.city.item.name}</Text>
           <SimpleLineIcons name="location-pin" size={30} color="#000" />
         </View>
-        <Text>Thanh Xuân, Hà Nội</Text>
+        <Text>
+          {props.city.item.name}, {props.city.item.country}
+        </Text>
       </View>
     </View>
   );

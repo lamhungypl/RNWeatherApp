@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,40 +7,82 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import {NavigationEvents} from 'react-navigation';
 import CityCard from '../Components/CityCard';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconFeather from 'react-native-vector-icons/Feather';
 import {RouteNames} from '../Config/Routes';
 import CityPicker from '../Components/CityPicker';
+import {useAsyncStorage} from '@react-native-community/async-storage';
 IconAntDesign.loadFont();
 IconFeather.loadFont();
+
+const CITIES_ASYNC_STORAGE = 'cities';
 const CityManager = props => {
   const [isOpenModalAdd, setIsOpenModalAdd] = useState(false);
-  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
+  useEffect(() => {
+    readCitiesFromStorage();
+  }, []);
+  const {getItem: getCities, setItem: setCities} = useAsyncStorage(
+    CITIES_ASYNC_STORAGE,
+  );
+  const [listCities, setListCities] = useState([]);
 
-  const modalRef = useRef(null);
+  const readCitiesFromStorage = async () => {
+    const listCitiesAsync = (await getCities()) || [];
+    setListCities(JSON.parse(listCitiesAsync));
+  };
+
+  const writeCitiesToStorage = async newList => {
+    await setCities(JSON.stringify(newList));
+    setListCities(newList);
+  };
+
+  const handleDidFocus = () => {
+    // console.log('didFocus', listCities)
+    readCitiesFromStorage();
+  };
+
   const handlePressAddCity = () => {
     setIsOpenModalAdd(true);
   };
+  const handleCloseModalAdd = item => {
+    setIsOpenModalAdd(false);
+  };
+  const handleItemSelected = item => {
+    const currentList = Array.from(listCities);
+    const currentListID = currentList.map(city => city.id);
+    if (!currentListID.includes(item.id)) {
+      const newListCities = currentList.concat(item);
+      writeCitiesToStorage(newListCities);
+    }
+    return;
+  };
   const renderItem = (item, index, navigation) => {
-    return <CityCard navigation={navigation} />;
+    return <CityCard city={item} navigation={navigation} />;
   };
   return (
     <View style={styles.container}>
+      <NavigationEvents onDidFocus={() => handleDidFocus()} />
       <FlatList
         renderItem={(item, index) => {
           const navigation = props.navigation;
           return renderItem(item, index, navigation);
         }}
-        data={[0, 1]}
+        data={listCities}
         keyExtractor={(item, index) => Math.random().toString()}
       />
       <TouchableOpacity
         style={styles.addCityBtn}
-        onPress={() => handlePressAddCity()}>
+        onPress={item => handlePressAddCity(item)}>
         <IconAntDesign name="pluscircle" size={60} color="#900" />
       </TouchableOpacity>
-      {isOpenModalAdd && <CityPicker isVisible={isOpenModalAdd} />}
+      <CityPicker
+        isVisible={isOpenModalAdd}
+        closeModal={() => handleCloseModalAdd()}
+        onPressItem={item => handleItemSelected(item)}
+        cities={listCities}
+      />
     </View>
   );
 };

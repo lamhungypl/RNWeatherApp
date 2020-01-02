@@ -22,12 +22,18 @@ import {UrlApi, API_KEY} from '../Utils/Constants';
 import ChartTemperature from '../Components/ChartTemperature';
 IconMaterialCommunity.loadFont();
 export default function WeatherDetail(props) {
+  const [currentCity, setCurrentCity] = useState(props.city);
   const [currentWeather, setCurrentWeather] = useState({});
   const [forecastData, setForecastData] = useState([]);
   const [chartData, setChartData] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   const [isLoadingForecast, setIsLoadingForecast] = useState(false);
   const [isUpdatedForecast, setIsUpdatedForecast] = useState(false);
+  useEffect(() => {
+    getCurrentWeather();
+    getWeatherForecast();
+    setCurrentCity(props.city);
+  }, [props.city]);
   useEffect(() => {
     const chartDataConfig = forecastData.slice(0, 8).map(data => {
       return {temp: data.temp, time: data.time};
@@ -46,13 +52,10 @@ export default function WeatherDetail(props) {
     setChartData(dataObject);
   }, [forecastData]);
 
-  useEffect(() => {
-    getCurrentWeather();
-    getWeatherForecast();
-  }, []);
   const getCurrentWeather = async () => {
     const url = replaceStringUrl(UrlApi.currentWeather, [
-      ...props.city,
+      props.city.name,
+      props.city.country,
       API_KEY,
     ]);
     const data = await callApiGet(url);
@@ -61,7 +64,9 @@ export default function WeatherDetail(props) {
   };
   const getWeatherForecast = async () => {
     const url = replaceStringUrl(UrlApi.three_hourlyForecast, [
-      ...props.city,
+      currentCity.name,
+      currentCity.country,
+
       API_KEY,
     ]);
     const data = await callApiGet(url);
@@ -94,17 +99,33 @@ export default function WeatherDetail(props) {
         <View style={styles.forecastContainer}>
           <WeatherForecast
             source={Images.cloud}
-            temp={{max: 24, min: 16}}
+            temp={{
+              max:
+                (forecastData.length && parseInt(forecastData[0].temp_max)) ||
+                20,
+              min:
+                (forecastData.length && parseInt(forecastData[0].temp_min)) ||
+                16,
+            }}
             time={'Hôm nay'}
           />
           <WeatherForecast
             source={Images.cloud}
-            temp={{max: 24, min: 16}}
+            temp={{
+              max:
+                (forecastData.length && parseInt(forecastData[7].temp_max)) ||
+                20,
+              min:
+                (forecastData.length && parseInt(forecastData[7].temp_min)) ||
+                16,
+            }}
             time={'Ngày mai'}
           />
           <TouchableOpacity
             onPress={() =>
-              props.navigation.navigate(RouteNames.WeatherForecastScreen)
+              props.navigation.navigate(RouteNames.WeatherForecastScreen, {
+                city: currentCity,
+              })
             }>
             <View
               style={{
@@ -130,24 +151,24 @@ export default function WeatherDetail(props) {
               <WeatherAttribute
                 title={'Gió'}
                 source={Icons.humidity}
-                value={currentWeather.speed}
+                value={`${currentWeather.speed} m/s`}
               />
               <WeatherAttribute
                 title={'Cảm giác như'}
                 source={Icons.humidity}
-                value={currentWeather.feels_like}
+                value={`${currentWeather.feels_like} ℃`}
               />
             </View>
             <View style={{flexDirection: 'row'}}>
               <WeatherAttribute
-                title={'Sương mù'}
+                title={'Độ ẩm'}
                 source={Icons.humidity}
-                value={currentWeather.humidity}
+                value={`${currentWeather.humidity} %`}
               />
               <WeatherAttribute
                 title={'Áp suất'}
-                source={Icons.umbrela}
-                value={currentWeather.pressure}
+                source={Icons.humidity}
+                value={`${currentWeather.pressure} hPa`}
               />
             </View>
           </View>

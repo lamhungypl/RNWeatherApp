@@ -13,6 +13,8 @@ import {
 } from 'native-base';
 import PropTypes from 'prop-types';
 import {Images, Icons} from '../Assets';
+import IconFeather from 'react-native-vector-icons/Feather';
+IconFeather.loadFont();
 export default function HeaderSearch(props) {
   return (
     <Header
@@ -42,8 +44,8 @@ export default function HeaderSearch(props) {
         }}>
         <TouchableOpacity
           style={{width: 40, height: 30, justifyContent: 'center'}}
-          onPress={() => props.onPress}>
-          <Image source={Icons.cloudrain} />
+          onPress={() => props.onPress()}>
+          <IconFeather name="x" size={30} color="#900" />
         </TouchableOpacity>
         <View>
           <Text

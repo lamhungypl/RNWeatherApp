@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 
 const WeatherForecast = props => {
+  useEffect(() => {});
   const {source, time, temp, style} = props;
   return (
     <View style={styles.container}>

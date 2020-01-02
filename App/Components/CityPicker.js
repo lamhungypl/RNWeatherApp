@@ -46,27 +46,39 @@ const CityPicker = props => {
   const clearQuery = () => {
     setSearchValue('');
   };
-  const onPressItem = () => {
-    setIsVisible(false);
+  const onPressItem = item => {
+    props.closeModal();
+    props.onPressItem(item);
+  };
+  const onPressHeader = () => {
+    props.closeModal();
   };
   const renderItem = (item, index) => {
-    const checked = true;
+    const checked = props.cities.map(city => city.id).includes(item.id);
     const name = `${item.name}, ${item.country}`;
     return (
       <View>
         <TouchableOpacity
-          onPress={() => onPressItem()}
+          onPress={() => onPressItem(item)}
           style={[styles.cell, props.cellStyle, {height: 40}]}>
-          <Text
-            numberOfLines={1}
-            style={[styles.cellTitle, props.cellTitleStyle]}>
-            {name}
-          </Text>
-          <Text style={[styles.cellLabel, props.cellLabelStyle]} />
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <Text
+              numberOfLines={1}
+              style={[styles.cellTitle, props.cellTitleStyle]}>
+              {name}
+            </Text>
+            <Text style={[styles.cellLabel, props.cellLabelStyle]} />
 
-          {checked && (
-            <Image style={styles.checkboxContainer} source={Icons.tickmark} />
-          )}
+            {checked && (
+              <Image style={styles.checkboxContainer} source={Icons.tickmark} />
+            )}
+          </View>
         </TouchableOpacity>
         <View style={styles.separator} />
       </View>
@@ -78,10 +90,10 @@ const CityPicker = props => {
       hideModalContentWhileAnimating={true}
       backdropTransitionOutTiming={0}
       style={{margin: 0}}
-      isVisible={isVisible}
+      isVisible={props.isVisible}
       hideModalContentWhileAnimating={true}>
       <View style={{flex: 1, backgroundColor: 'white', borderRadius: 5}}>
-        <HeaderSearch onPress={() => clearQuery()} title={'Search'} />
+        <HeaderSearch onPress={() => onPressHeader()} title={'Search'} />
         <Search
           cancelButtonWidth={CANCEL_WIDTH}
           positionRightDelete={CANCEL_WIDTH}

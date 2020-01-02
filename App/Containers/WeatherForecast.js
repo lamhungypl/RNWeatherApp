@@ -20,18 +20,24 @@ import {
 } from '../Utils';
 import ForecastItem from '../Components/ForecastItem';
 import {RouteNames} from '../Config/Routes';
+import {NavigationEvents} from 'react-navigation';
 IonicIcons.loadFont();
 
-const WeatherForecast = () => {
+const WeatherForecast = props => {
+  const [currentCity, setCurrentCity] = useState({
+    name: 'ha noi',
+    country: 'VN',
+  });
   const [forecastData, setForecastData] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   useEffect(() => {
     getWeatherForecast();
-  }, []);
+  }, [currentCity]);
   const getWeatherForecast = async () => {
     const url = replaceStringUrl(UrlApi.three_hourlyForecast, [
-      'hanoi',
-      'vn',
+      currentCity.name,
+      currentCity.country,
+
       API_KEY,
     ]);
     const data = await callApiGet(url);
@@ -40,11 +46,22 @@ const WeatherForecast = () => {
     setIsUpdated(true);
   };
 
+  const handleDidFocus = () => {
+    const cityparam = props.navigation.getParam('city', {
+      item: currentCity,
+    });
+
+    setCurrentCity(cityparam);
+
+    const headerName = `Forecast ${cityparam.name}, ${cityparam.country}`;
+    props.navigation.setParams({otherParam: headerName});
+  };
   const renderItemFlatlist = (item, index) => {
     return <ForecastItem item={item} index={index} isUpdated={isUpdated} />;
   };
   return (
     <View style={styles.container}>
+      <NavigationEvents onDidFocus={() => handleDidFocus()} />
       <View style={styles.background}>
         <Image style={styles.backgroundImage} source={Images.sea} />
       </View>
@@ -66,7 +83,11 @@ const WeatherForecast = () => {
 };
 WeatherForecast.navigationOptions = ({navigation}) => {
   return {
-    headerTitle: () => <Text>{RouteNames.WeatherForecastScreen}</Text>,
+    headerTitle: () => {
+      const title = navigation.getParam('otherParam', RouteNames.HomeScreen);
+
+      return <Text>{title}</Text>;
+    },
   };
 };
 const styles = StyleSheet.create({

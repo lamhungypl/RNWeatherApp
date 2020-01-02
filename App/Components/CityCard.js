@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Images, Icons} from '../Assets';
 import WeatherAttribute from './WeatherAttribute';
@@ -10,8 +10,9 @@ IconAntDesign.loadFont();
 SimpleLineIcons.loadFont();
 const CityCard = props => {
   const [isEditting, setIsEditting] = useState(false);
+  useEffect(() => {}, []);
   const handlePressCityCard = () => {
-    props.navigation.navigate(RouteNames.HomeScreen);
+    props.navigation.navigate(RouteNames.HomeScreen, {city: props.city});
   };
   return (
     <TouchableOpacity onPress={() => handlePressCityCard()}>
@@ -24,10 +25,10 @@ const CityCard = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={styles.cityName}>Thanh Xuân</Text>
+              <Text style={styles.cityName}>{props.city.item.name}</Text>
               <SimpleLineIcons name="location-pin" size={30} color="#000" />
             </View>
-            <Text>Thanh Xuân, Hà Nội</Text>
+            <Text>{`${props.city.item.name}, ${props.city.item.country}`}</Text>
           </View>
           <Image source={Icons.cloudrain}></Image>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>

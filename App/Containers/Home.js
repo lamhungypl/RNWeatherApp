@@ -20,21 +20,58 @@ import {
   convertDataCurrentWeather,
 } from '../Utils';
 import {API_KEY, UrlApi} from '../Utils/Constants';
+import {NavigationEvents} from 'react-navigation';
+import {useAsyncStorage} from '@react-native-community/async-storage';
+
 Icon.loadFont();
 IconAntDesign.loadFont();
+const CITIES_ASYNC_STORAGE = 'cities';
+
 const Home = props => {
+  const {
+    getItem: getCities,
+    setItem: setCities,
+    removeItem: removeCity,
+  } = useAsyncStorage(CITIES_ASYNC_STORAGE);
+  const [listCities, setListCities] = useState([]);
+  const [city, setCity] = useState({name: 'Ha Noi', country: 'VN'});
+
+  useEffect(() => {
+    readCitiesFromStorage();
+    if (listCities.length > 0) {
+      setCity(listCities[0]);
+    } else {
+      writeCitiesToStorage([{...city}]);
+    }
+  }, []);
+  const readCitiesFromStorage = async () => {
+    const listCitiesAsync = (await getCities()) || [];
+    setListCities(JSON.parse(listCitiesAsync));
+  };
+  const writeCitiesToStorage = async newList => {
+    await setCities(JSON.stringify(newList));
+    setListCities(newList);
+  };
+
   const goWeatherDetail = () => {
     props.navigation.navigate(RouteNames.WeatherDetailScreen);
+  };
+  // JSON.stringify(navigation.getParam('itemId', 'NO-ID')
+  const handleDidFocus = () => {
+    const cityparam = props.navigation.getParam('city', {
+      item: city,
+    });
+    setCity(cityparam['item']);
+    const headerName = `${cityparam['item'].name}, ${cityparam['item'].country}`;
+    props.navigation.setParams({otherParam: headerName});
   };
   const renderTabBar = () => <StatusBar hidden />;
   return (
     <View style={styles.container}>
+      <NavigationEvents onDidFocus={() => handleDidFocus()} />
+
       <ScrollableTabView renderTabBar={() => renderTabBar()}>
-        <WeatherDetail
-          city={['hanoi', 'vn']}
-          navigation={props.navigation}
-          key={1}
-        />
+        <WeatherDetail city={city} navigation={props.navigation} key={1} />
         {/* <WeatherDetail navigation={props.navigation} key={2} /> */}
       </ScrollableTabView>
     </View>
@@ -42,7 +79,10 @@ const Home = props => {
 };
 Home.navigationOptions = ({navigation}) => {
   return {
-    headerTitle: () => <Text>{RouteNames.HomeScreen}</Text>,
+    headerTitle: () => {
+      const title = navigation.getParam('otherParam', RouteNames.HomeScreen);
+      return <Text>{title}</Text>;
+    },
     headerLeft: () => (
       <TouchableOpacity
         onPress={() => navigation.navigate(RouteNames.CityManagerScreen)}>
