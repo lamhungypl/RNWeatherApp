@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: Platform.OS === 'ios' ? 34 : 0,
   },
   background: {
     position: 'absolute',
